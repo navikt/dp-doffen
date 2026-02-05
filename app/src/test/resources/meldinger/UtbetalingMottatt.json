@@ -1,0 +1,11 @@
+{
+  "@event_name" : "utbetaling_mottatt",
+  "ident" : "04909296396",
+  "behandlingId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
+  "eksternBehandlingId" : "AZv+1HqnenSkcAXfTI6sSQ==",
+  "sakId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
+  "eksternSakId" : "AZv+ldLefq260d09GEkigA==",
+  "meldekortId" : "019bfed3-da94-7e73-9c40-03ebcd58655d",
+  "@id" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
+  "@opprettet" : "2026-01-19T15:25:52.839889601"
+}

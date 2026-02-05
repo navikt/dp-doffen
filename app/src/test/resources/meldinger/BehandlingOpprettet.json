@@ -1,0 +1,15 @@
+{
+  "@event_name" : "behandling_opprettet",
+  "ident" : "04909296396",
+  "behandlingId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
+  "behandlingsKjedeId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd131",
+  "basertPåBehandling": "190bf8d8-3708-4e4c-8a3d-3c8fe47cd138",
+  "behandletHendelse" : {
+    "id": "733acf0f-46bb-4522-8bd2-b18333c2a97d",
+    "datatype": "UUID",
+    "type": "Søknad",
+    "skjedde": "2025-01-21"
+  },
+  "@id" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
+  "@opprettet" : "2026-01-19T15:25:52.839889601"
+}

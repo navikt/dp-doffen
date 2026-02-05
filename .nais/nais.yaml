@@ -1,0 +1,90 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: dp-doffen
+  namespace: teamdagpenger
+  labels:
+    team: teamdagpenger
+spec:
+  image: "{{ image }}"
+  port: 8080
+  liveness:
+    path: /isalive
+  readiness:
+    path: /isready
+  leaderElection: true
+  prometheus:
+    enabled: true
+    path: /metrics
+  replicas:
+    min: 2
+    max: 2
+  resources:
+    limits:
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 304Mi
+  env:
+    - name: JDK_JAVA_OPTIONS
+      value: -XX:+UseParallelGC -XX:MaxRAMPercentage=25.0 -XX:ActiveProcessorCount=4
+  {{#if ingresses}}
+  ingresses:
+    {{#each ingresses as |url|}}
+     - {{url}}
+    {{/each}}
+  {{/if}}
+  secureLogs:
+    enabled: true
+  azure:
+    application:
+      enabled: true
+      tenant: {{azure.tenant}}
+      claims:
+        extra:
+          - NAVident
+        groups:
+          - id: 7e7a9ef8-d9ba-445b-bb91-d2b3c10a0c13
+  observability:
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+  gcp:
+    sqlInstances:
+      - type: POSTGRES_17
+        highAvailability: true
+        diskAutoresize: true
+        pointInTimeRecovery: true
+        tier: {{gcp.sql.tier}}
+        flags:
+          - name: cloudsql.enable_pgaudit
+            value: "true"
+          - name: pgaudit.log
+            value: "write,ddl,role"
+          - name: pgaudit.log_parameter
+            value: "on"
+        databases:
+          - name: doffen
+            envVarPrefix: DB
+  kafka:
+    pool: "{{ kafka.pool }}"
+  accessPolicy:
+    outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
+    inbound:
+      rules:
+        - application: dp-behandling-admin
+        {{#if wonderwalled}}
+        - application: wonderwalled-idporten
+          namespace: nais
+        - application: wonderwalled-azure
+          namespace: nais
+        - application: azure-token-generator
+          namespace: nais
+        {{/if}}

@@ -1,0 +1,11 @@
+{
+  "@event_name" : "meldekort_innsendt",
+  "id": "019bfec4-43d6-7c2a-ab38-c5d08c08fadc",
+  "ident" : "04909296396",
+  "periode": {
+    "fraOgMed": "2026-01-19",
+    "tilOgMed": "2026-02-01"
+  },
+  "dager" : [],
+  "innsendtTidspunkt" : "2026-01-27T10:24:28"
+}

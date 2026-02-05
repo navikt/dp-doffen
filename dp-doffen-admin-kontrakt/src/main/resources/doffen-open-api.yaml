@@ -1,0 +1,225 @@
+openapi: 3.0.3
+info:
+  title: Oppslag på ident eller id som flyter på rapid'en
+  version: 1.0.0
+  contact:
+    name: '#team-dagpenger'
+servers:
+  - url: https://dp-doffen.intern.dev.nav.no
+    description: dev
+  - url: https://dp-doffen.intern.nav.no
+    description: prod
+paths:
+  /tre/hentForIdent:
+    post:
+      summary: Hent tre med noder for en ident
+      operationId: hentTreForIdent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentForesporsel'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tre'
+        404:
+          description: ident ikke funnet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpProblem'
+
+        500:
+          description: Noe gikk galt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpProblem'
+
+  /tre/hentForId:
+    post:
+      summary: Hent tre med noder for en id
+      operationId: hentTreForId
+      parameters:
+        - name: id
+          in: query
+          required: true
+          description: Id det søkes på
+          schema:
+            type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tre'
+        404:
+          description: id ikke funnet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpProblem'
+
+        500:
+          description: Noe gikk galt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpProblem'
+
+components:
+  schemas:
+    Tre:
+      type: object
+      properties:
+        ident:
+          type: string
+        saker:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sak'
+        søknader:
+          type: array
+          items:
+            $ref: '#/components/schemas/Soknad'
+        behandlinger:
+          type: array
+          items:
+            $ref: '#/components/schemas/Behandling'
+        meldekort:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meldekort'
+        utbetalinger:
+          type: array
+          items:
+            $ref: '#/components/schemas/Utbetaling'
+
+    Sak:
+      type: object
+      properties:
+        sakId:
+          type: string
+
+    Soknad:
+      type: object
+      properties:
+        søknadId:
+          type: string
+
+    Behandling:
+      type: object
+      properties:
+        behandlingId:
+          type: string
+        behandlingsKjedeId:
+          type: string
+        søknadId:
+          type: string
+        meldekortId:
+          type: string
+        manuellId:
+          type: string
+        basertPåId:
+          type: string
+        omgjøringId:
+          type: string
+
+    Meldekort:
+      type: object
+      properties:
+        meldekortId:
+          type: string
+
+    Utbetaling:
+      type: object
+      properties:
+        behandlingId:
+          type: string
+        eksternBehandlingId:
+          type: string
+        sakId:
+          type: string
+        eksternSakId:
+          type: string
+        meldekortId:
+          type: string
+
+    liste:
+      type: array
+      items:
+        $ref: '#/components/schemas/Node'
+    Node:
+      type: object
+      required:
+        - ident
+        - id
+        - typeId
+      properties:
+        ident:
+          type: string
+        id:
+          type: string
+        typeId:
+          type: string
+          enum:
+            - søknadId
+            - behandlingId
+            - behandlingsKjedeId
+    IdentForesporsel:
+      type: object
+      required:
+        - ident
+      properties:
+        ident:
+          $ref: '#/components/schemas/Personident'
+
+    Personident:
+      type: string
+      pattern: '^[0-9]{11}$'
+    HttpProblem:
+      type: object
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          description: A URI reference [RFC3986] that identifies the problem type. This specification encourages that, when dereferenced, it provide human-readable documentation for the problem type
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type. It SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization
+        status:
+          type: integer
+          description: The HTTP status code ([RFC7231], Section 6) generated by the origin server for this occurrence of the problem
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+        instance:
+          type: string
+          format: uri
+          description: A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced
+
+  securitySchemes:
+    azureAd:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad) til autentisering. 
+        Token må ha `audience` satt til `[cluster].teamdagpenger.dp-doffen`.
+        
+        For å teste APIet kan du lage et gyldig OBO-token ved å bruke wonderwalled:
+        - [dev-gcp](https://azure-token-generator.intern.dev.nav.no/api/obo?aud=dev-gcp.teamdagpenger.dp-doffen)
