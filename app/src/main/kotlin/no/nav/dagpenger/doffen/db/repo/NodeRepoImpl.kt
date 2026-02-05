@@ -26,17 +26,6 @@ class NodeRepoImpl(
                                 ident = tre.ident,
                                 typeId = node.typeId,
                             )
-//                        if (!sjekkOmIdentFinnes(nodeDto.ident, tx)) {
-//                            val identNode =
-//                                NodeDTO(
-//                                    gruppeId = nodeDto.ident,
-//                                    gruppeType = GruppeType.IDENT,
-//                                    id = nodeDto.ident,
-//                                    ident = nodeDto.ident,
-//                                    typeId = TypeId.IDENT,
-//                                )
-//                            lagreNode(identNode, tx)
-//                        }
                         lagreNode(nodeDto, tx)
                     }
                 }
