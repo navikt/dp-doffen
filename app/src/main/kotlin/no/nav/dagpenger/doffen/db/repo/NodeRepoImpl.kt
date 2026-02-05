@@ -93,7 +93,7 @@ class NodeRepoImpl(
         tx.run(
             queryOf(
                 """
-                INSERT INTO nodes (
+                INSERT INTO node (
                    gruppe_id,
                    gruppe_type,
                    ident, 
@@ -126,7 +126,7 @@ class NodeRepoImpl(
             queryOf(
                 """
                 SELECT COUNT(*) AS count
-                FROM nodes
+                FROM node
                 WHERE ident = :ident
                   and gruppe_type = 'IDENT'
                 """.trimIndent(),
@@ -141,7 +141,7 @@ class NodeRepoImpl(
                     queryOf(
                         """
                         SELECT *
-                        FROM nodes
+                        FROM node
                         WHERE ident = :ident
                         """.trimIndent(),
                         mapOf("ident" to ident),
@@ -158,7 +158,7 @@ class NodeRepoImpl(
                     queryOf(
                         """
                         SELECT *
-                        FROM nodes
+                        FROM node
                         WHERE id = :id
                         """.trimIndent(),
                         mapOf("id" to id),
