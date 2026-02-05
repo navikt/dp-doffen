@@ -100,19 +100,19 @@ class NodeRepoImpl(
                    id, 
                    type_id
                 ) VALUES (
-                   :gruppe_id,
-                   :gruppe_type,
+                   :gruppeId,
+                   :gruppeType,
                    :ident, 
                    :id, 
-                   :type_id
+                   :typeId
                 ) ON CONFLICT DO NOTHING
                 """.trimIndent(),
                 mapOf(
-                    "gruppe_id" to node.gruppeId,
-                    "gruppe_type" to node.gruppeType.name,
+                    "gruppeId" to node.gruppeId,
+                    "gruppeType" to node.gruppeType.name,
                     "ident" to node.ident,
                     "id" to node.id,
-                    "type_id" to node.typeId.name,
+                    "typeId" to node.typeId.name,
                 ),
             ).asUpdate,
         )
