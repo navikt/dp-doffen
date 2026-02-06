@@ -40,14 +40,14 @@ internal class MeldekortInnsendtMottak(
         meterRegistry: MeterRegistry,
     ) {
         val ident = packet["ident"].asText()
-        val id = packet["id"].asUUID()
+        val id = packet["id"].asText()
 
         val tre =
             Tre(ident = ident).also { tre ->
                 tre.leggTilNode(
                     node =
                         Node(
-                            id = id.toString(),
+                            id = id,
                             typeId = MELDEKORTID,
                         ),
                     gruppeId = ident,
