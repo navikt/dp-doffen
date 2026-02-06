@@ -48,7 +48,7 @@ internal class UtbetalingMottak(
         val eksternBehandlingId = packet["eksternBehandlingId"].asText()
         val sakId = packet["sakId"].asText()
         val eksternSakId = packet["eksternSakId"].asText()
-        val meldekortId = packet["meldekortId"].asUUID()
+        val meldekortId = packet["meldekortId"].asText()
 
         val tre = Tre(ident = ident)
         val gruppe =
@@ -87,7 +87,7 @@ internal class UtbetalingMottak(
 
         gruppe.leggTilNode(
             Node(
-                id = meldekortId.toString(),
+                id = meldekortId,
                 typeId = TypeId.MELDEKORTID,
             ),
         )
