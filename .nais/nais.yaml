@@ -12,7 +12,7 @@ spec:
     path: /isalive
   readiness:
     path: /isready
-  leaderElection: true
+  leaderElection: false
   prometheus:
     enabled: true
     path: /metrics
