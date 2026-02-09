@@ -49,12 +49,18 @@ internal fun Application.doffenApi(repo: NodeRepo) {
                         HttpStatusCode.BadRequest,
                         "Mangler id i path",
                     )
-                val tre =
-                    repo.hentTreForId(id)
+                val ident =
+                    repo.hentIdentForId(id)
                         ?: return@post call.respond(
                             HttpStatusCode.NotFound,
-                            "Fant ikke tre for id $id",
+                            "Fant ikke ident $id",
                         )
+
+                val tre =
+                    repo.hentTreForIdent(ident) ?: return@post call.respond(
+                        HttpStatusCode.NotFound,
+                        "Fant ikke tre for ident $ident",
+                    )
                 call.respond(HttpStatusCode.OK, tre.toDTO())
             }
         }

@@ -140,22 +140,23 @@ class NodeRepoImpl(
                 )
             }.lagTre()
 
-    override fun hentTreForId(id: String): Tre? =
+    override fun hentIdentForId(id: String): String? =
         sessionOf(dataSource)
             .use { session ->
                 session.run(
                     queryOf(
                         """
-                        SELECT *
+                        SELECT ident
                         FROM node
                         WHERE id = :id
+                        LIMIT 1
                         """.trimIndent(),
                         mapOf("id" to id),
                     ).map { row ->
-                        row.toNode()
-                    }.asList,
+                        row.string("ident")
+                    }.asSingle,
                 )
-            }.lagTre()
+            }
 
     private fun Row.toNode(): NodeDTO =
         NodeDTO(

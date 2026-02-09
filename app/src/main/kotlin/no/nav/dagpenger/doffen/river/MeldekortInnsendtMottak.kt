@@ -6,7 +6,6 @@ import com.github.navikt.tbd_libs.rapids_and_rivers_api.MessageContext
 import com.github.navikt.tbd_libs.rapids_and_rivers_api.MessageMetadata
 import com.github.navikt.tbd_libs.rapids_and_rivers_api.RapidsConnection
 import io.micrometer.core.instrument.MeterRegistry
-import no.nav.dagpenger.doffen.asUUID
 import no.nav.dagpenger.doffen.db.repo.NodeRepo
 import no.nav.dagpenger.doffen.domene.GruppeType.MELDEKORT
 import no.nav.dagpenger.doffen.domene.Node

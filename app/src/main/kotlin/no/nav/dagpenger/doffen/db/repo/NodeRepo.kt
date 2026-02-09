@@ -11,5 +11,5 @@ interface NodeRepo {
 
     fun hentTreForIdent(ident: String): Tre?
 
-    fun hentTreForId(id: String): Tre?
+    fun hentIdentForId(id: String): String?
 }
