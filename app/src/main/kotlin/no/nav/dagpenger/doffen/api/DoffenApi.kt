@@ -2,6 +2,7 @@ package no.nav.dagpenger.doffen.api
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
+import io.ktor.server.application.log
 import io.ktor.server.auth.authenticate
 import io.ktor.server.plugins.swagger.swaggerUI
 import io.ktor.server.request.receive
@@ -32,35 +33,41 @@ internal fun Application.doffenApi(repo: NodeRepo) {
 
         authenticate("azureAd") {
             post("tre/hentForIdent") {
+                log.info("Vi har blitt kallt på /tre/hentForIdent")
                 val ident = call.receive<IdentForesporselDTO>()
+                log.info("Vi har fått en ident")
                 val tre =
                     repo.hentTreForIdent(ident.ident) ?: return@post call.respond(
                         HttpStatusCode.NotFound,
                         "Fant ikke tre for ident ${ident.ident}",
                     )
+                log.info("Vi har funnet et tre for ident med ${tre.grupper.size} grupper og ${tre.grupper.sumOf { it.noder.size }} noder")
                 call.respond(HttpStatusCode.OK, tre.toDTO())
             }
         }
 
         authenticate("azureAd") {
             post("tre/hentForId/{id}") {
+                log.info("Vi har blitt kallt på /tre/hentForId/{id}")
                 val id =
                     call.parameters["id"] ?: return@post call.respond(
                         HttpStatusCode.BadRequest,
                         "Mangler id i path",
                     )
+                log.info("Vi har fått id: $id")
                 val ident =
                     repo.hentIdentForId(id)
                         ?: return@post call.respond(
                             HttpStatusCode.NotFound,
                             "Fant ikke ident $id",
                         )
-
+                log.info("Vi har funnet en ident")
                 val tre =
                     repo.hentTreForIdent(ident) ?: return@post call.respond(
                         HttpStatusCode.NotFound,
                         "Fant ikke tre for ident $ident",
                     )
+                log.info("Vi har funnet et tre for ident med ${tre.grupper.size} grupper og ${tre.grupper.sumOf { it.noder.size }} noder")
                 call.respond(HttpStatusCode.OK, tre.toDTO())
             }
         }
