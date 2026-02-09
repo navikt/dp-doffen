@@ -47,23 +47,23 @@ internal fun Application.doffenApi(repo: NodeRepo) {
         }
 
         authenticate("azureAd") {
-            post("tre/hentForId/{id}") {
+            get("tre/hentForId/{id}") {
                 log.info("Vi har blitt kallt på /tre/hentForId/{id}")
                 val id =
-                    call.parameters["id"] ?: return@post call.respond(
+                    call.parameters["id"] ?: return@get call.respond(
                         HttpStatusCode.BadRequest,
                         "Mangler id i path",
                     )
                 log.info("Vi har fått id: $id")
                 val ident =
                     repo.hentIdentForId(id)
-                        ?: return@post call.respond(
+                        ?: return@get call.respond(
                             HttpStatusCode.NotFound,
                             "Fant ikke ident $id",
                         )
                 log.info("Vi har funnet en ident")
                 val tre =
-                    repo.hentTreForIdent(ident) ?: return@post call.respond(
+                    repo.hentTreForIdent(ident) ?: return@get call.respond(
                         HttpStatusCode.NotFound,
                         "Fant ikke tre for ident $ident",
                     )

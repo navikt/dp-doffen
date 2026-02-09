@@ -256,7 +256,7 @@ class DoffenApiTest {
         medSikretApi(repo) { context ->
             context
                 .autentisert(
-                    HttpMethod.Post,
+                    HttpMethod.Get,
                     "/tre/hentForId/1",
                 ).apply {
                     status shouldBe HttpStatusCode.OK

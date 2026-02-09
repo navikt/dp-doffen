@@ -44,7 +44,7 @@ paths:
                 $ref: '#/components/schemas/HttpProblem'
 
   /tre/hentForId:
-    post:
+    get:
       summary: Hent tre med noder for en id
       operationId: hentTreForId
       parameters:
