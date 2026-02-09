@@ -25,7 +25,7 @@ data class Tre(
         gruppeType: GruppeType,
     ): Gruppe {
         val gruppe =
-            grupper.find { it.id == gruppeId } ?: Gruppe(
+            grupper.find { it.id == gruppeId && it.type == gruppeType } ?: Gruppe(
                 type = gruppeType,
                 id = gruppeId,
             ).also { grupper.add(it) }

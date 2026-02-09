@@ -128,7 +128,11 @@ class DoffenApiTest {
                     bodyAsText() shouldEqualSpecifiedJson """
                         {
                           "ident": "1",
-                          "saker": [],
+                          "saker": [
+                            {
+                              "sakId": "id-2"
+                            }
+                          ],
                           "søknader": [
                             {
                               "søknadId": "id-1"
