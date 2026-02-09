@@ -9,14 +9,14 @@ internal fun JWTAuthenticationProvider.Config.autoriserADGrupper() {
 //    val utviklerGruppe = Configuration.Grupper.admin
 
     validate { jwtClaims ->
-        jwtClaims.måInneholde(adGruppe = Configuration.utvikler)
+        jwtClaims.måInneholde(adGrupper = Configuration.utvikler)
         JWTPrincipal(jwtClaims.payload)
     }
 }
 
-private fun JWTCredential.måInneholde(adGruppe: String) =
+private fun JWTCredential.måInneholde(adGrupper: List<String>) =
     require(
         this.payload.claims["groups"]
             ?.asList(String::class.java)
-            ?.contains(adGruppe) ?: false,
+            ?.any { it in adGrupper } ?: false,
     ) { "Mangler tilgang" }

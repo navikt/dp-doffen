@@ -45,7 +45,7 @@ object TestApplication {
     ) {
         System.setProperty("azure-app.client-id", CLIENT_ID)
         System.setProperty("azure-app.well-known-url", "${mockOAuth2Server.wellKnownUrl(AZUREAD_ISSUER_ID)}")
-        System.setProperty("groups", Configuration.utvikler)
+        System.setProperty("groups", Configuration.utvikler.first())
 
         return naisfulTestApp(
             {
@@ -65,7 +65,7 @@ object TestApplication {
         httpMethod: HttpMethod = HttpMethod.Post,
         endepunkt: String,
         body: String? = null,
-        token: String = testAzureAdToken(listOf(Configuration.utvikler)),
+        token: String = testAzureAdToken(Configuration.utvikler),
     ): HttpResponse =
         client.request(endepunkt) {
             this.method = httpMethod

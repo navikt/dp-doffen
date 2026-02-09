@@ -20,7 +20,7 @@ object Configuration {
             ),
         )
 
-    val utvikler = "7e7a9ef8-d9ba-445b-bb91-d2b3c10a0c13"
+    val utvikler = listOf("7e7a9ef8-d9ba-445b-bb91-d2b3c10a0c13", "a266c2f1-cb88-4447-a753-131039c5048a")
 
     internal val properties =
         ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding defaultProperties

@@ -164,7 +164,14 @@ class DoffenApiTest {
                 NodeDTO(
                     id = "sak-id",
                     typeId = TypeId.SAKID,
-                    gruppeId = "sakId",
+                    gruppeId = "sak-id",
+                    gruppeType = GruppeType.SAK,
+                    ident = "12345678901",
+                ),
+                NodeDTO(
+                    id = "sak-id2",
+                    typeId = TypeId.SAKID,
+                    gruppeId = "sak-id2",
                     gruppeType = GruppeType.SAK,
                     ident = "12345678901",
                 ),
@@ -186,6 +193,78 @@ class DoffenApiTest {
                           "saker": [
                             {
                               "sakId": "sak-id"
+                            },
+                            {
+                              "sakId": "sak-id2"
+                            }
+                          ],
+                          "søknader": [
+                            {
+                              "søknadId": "søknad-id"
+                            }
+                          ],
+                          "behandlinger": [],
+                          "meldekort": [],
+                          "utbetalinger": []
+                        }
+                        """
+                }
+        }
+    }
+
+    @Test
+    fun `hent for en id kan returnere en liste`() {
+        val tre =
+            listOf(
+                NodeDTO(
+                    id = "12345678901",
+                    typeId = TypeId.IDENT,
+                    gruppeId = "ident",
+                    gruppeType = GruppeType.IDENT,
+                    ident = "12345678901",
+                ),
+                NodeDTO(
+                    id = "søknad-id",
+                    typeId = TypeId.SØKNADID,
+                    gruppeId = "gruppeId",
+                    gruppeType = GruppeType.SØKNAD,
+                    ident = "12345678901",
+                ),
+                NodeDTO(
+                    id = "sak-id",
+                    typeId = TypeId.SAKID,
+                    gruppeId = "sak-id",
+                    gruppeType = GruppeType.SAK,
+                    ident = "12345678901",
+                ),
+                NodeDTO(
+                    id = "sak-id2",
+                    typeId = TypeId.SAKID,
+                    gruppeId = "sak-id2",
+                    gruppeType = GruppeType.SAK,
+                    ident = "12345678901",
+                ),
+            ).lagTre()
+
+        coEvery { repo.hentTreForIdent(any()) } returns tre
+        coEvery { repo.hentIdentForId(any()) } returns "1"
+
+        medSikretApi(repo) { context ->
+            context
+                .autentisert(
+                    HttpMethod.Post,
+                    "/tre/hentForId/1",
+                ).apply {
+                    status shouldBe HttpStatusCode.OK
+                    bodyAsText() shouldEqualSpecifiedJson """
+                        {
+                          "ident": "12345678901",
+                          "saker": [
+                            {
+                              "sakId": "sak-id"
+                            },
+                            {
+                              "sakId": "sak-id2"
                             }
                           ],
                           "søknader": [
