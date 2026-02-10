@@ -27,7 +27,7 @@ internal class BehandlingsresultatMottak(
                     it.requireKey(
                         "ident",
                         "behandlingId",
-                        "behandlingsKjedeId",
+                        "behandlingskjedeId",
                         "behandletHendelse",
                     )
                 }
@@ -43,7 +43,7 @@ internal class BehandlingsresultatMottak(
     ) {
         val ident = packet["ident"].asText()
         val behandlingId = packet["behandlingId"].asUUID()
-        val behandlingsKjedeId = packet["behandlingsKjedeId"].asUUID()
+        val behandlingsKjedeId = packet["behandlingskjedeId"].asUUID()
         val basertPåBehandling = packet["basertPåBehandling"].takeIf { it.isTextual }?.asText()
         val hendelseId = packet["behandletHendelse"]["id"].asText()
         val hendelseType = packet["behandletHendelse"]["type"].asText()

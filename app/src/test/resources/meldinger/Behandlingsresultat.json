@@ -2,7 +2,7 @@
   "@event_name" : "behandlingsresultat",
   "ident" : "04909296396",
   "behandlingId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd130",
-  "behandlingsKjedeId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd131",
+  "behandlingskjedeId" : "290bf8d8-3708-4e4c-8a3d-3c8fe47cd131",
   "rettighetsperioder": [
     {
       "fraOgMed": "2026-01-19",

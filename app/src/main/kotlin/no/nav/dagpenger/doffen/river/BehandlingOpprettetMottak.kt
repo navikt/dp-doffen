@@ -34,7 +34,7 @@ internal class BehandlingOpprettetMottak(
                         "ident",
                         "behandlingId",
                         "behandletHendelse",
-                        "behandlingsKjedeId",
+                        "behandlingskjedeId",
                     )
                 }
                 validate { it.interestedIn("@id", "@opprettet", "basertPåBehandling") }
@@ -51,7 +51,7 @@ internal class BehandlingOpprettetMottak(
         val hendelseId = packet["behandletHendelse"]["id"].asText()
         val hendelseType = packet["behandletHendelse"]["type"].asText()
         val behandlingId = packet["behandlingId"].asUUID()
-        val behandlingsKjedeId = packet["behandlingsKjedeId"].asUUID()
+        val behandlingsKjedeId = packet["behandlingskjedeId"].asUUID()
         val basertPåBehandling = packet["basertPåBehandling"].takeIf { it.isTextual }?.asText()
 
         val tre = Tre(ident = ident)
