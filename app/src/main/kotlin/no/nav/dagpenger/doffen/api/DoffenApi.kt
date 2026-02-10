@@ -35,6 +35,7 @@ internal fun Application.doffenApi(repo: NodeRepo) {
             post("tre/hentForId") {
                 log.info("Vi har blitt kallt på /tre/hentForId")
                 val id = call.receive<IdRequestDTO>()
+                if (id.id == "0") return@post call.respond(HttpStatusCode.BadRequest, "Id kan ikke være 0")
 
                 val tre = repo.hentTreForIdent(id.id)
 
