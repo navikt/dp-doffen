@@ -16,7 +16,7 @@ import no.nav.dagpenger.doffen.domene.Node
 import no.nav.dagpenger.doffen.domene.Tre
 import no.nav.dagpenger.doffen.domene.TypeId
 import no.nav.doffen.kontrakt.api.models.BehandlingDTO
-import no.nav.doffen.kontrakt.api.models.IdentForesporselDTO
+import no.nav.doffen.kontrakt.api.models.IdRequestDTO
 import no.nav.doffen.kontrakt.api.models.MeldekortDTO
 import no.nav.doffen.kontrakt.api.models.SakDTO
 import no.nav.doffen.kontrakt.api.models.SoknadDTO
@@ -32,43 +32,30 @@ internal fun Application.doffenApi(repo: NodeRepo) {
         }
 
         authenticate("azureAd") {
-            post("tre/hentForIdent") {
-                log.info("Vi har blitt kallt på /tre/hentForIdent")
-                val ident = call.receive<IdentForesporselDTO>()
-                log.info("Vi har fått en ident")
-                val tre =
-                    repo.hentTreForIdent(ident.ident) ?: return@post call.respond(
-                        HttpStatusCode.NotFound,
-                        "Fant ikke tre for ident ${ident.ident}",
-                    )
-                log.info("Vi har funnet et tre for ident med ${tre.grupper.size} grupper og ${tre.grupper.sumOf { it.noder.size }} noder")
-                call.respond(HttpStatusCode.OK, tre.toDTO())
-            }
-        }
+            post("tre/hentForId") {
+                log.info("Vi har blitt kallt på /tre/hentForId")
+                val id = call.receive<IdRequestDTO>()
 
-        authenticate("azureAd") {
-            get("tre/hentForId/{id}") {
-                log.info("Vi har blitt kallt på /tre/hentForId/{id}")
-                val id =
-                    call.parameters["id"] ?: return@get call.respond(
-                        HttpStatusCode.BadRequest,
-                        "Mangler id i path",
-                    )
-                log.info("Vi har fått id: $id")
-                val ident =
-                    repo.hentIdentForId(id)
-                        ?: return@get call.respond(
+                val tre = repo.hentTreForIdent(id.id)
+
+                if (tre != null) {
+                    log.info("Vi har funnet id som ident")
+                    call.respond(HttpStatusCode.OK, tre.toDTO())
+                } else {
+                    log.info("Fant ikke ident. Vi leter videre om vi finner en id")
+                    val ident =
+                        repo.hentIdentForId(id.id) ?: return@post call.respond(
                             HttpStatusCode.NotFound,
-                            "Fant ikke ident $id",
+                            "Fant ikke id eller ident for id ${id.id}",
                         )
-                log.info("Vi har funnet en ident")
-                val tre =
-                    repo.hentTreForIdent(ident) ?: return@get call.respond(
-                        HttpStatusCode.NotFound,
-                        "Fant ikke tre for ident $ident",
-                    )
-                log.info("Vi har funnet et tre for ident med ${tre.grupper.size} grupper og ${tre.grupper.sumOf { it.noder.size }} noder")
-                call.respond(HttpStatusCode.OK, tre.toDTO())
+
+                    val tre =
+                        repo.hentTreForIdent(ident) ?: return@post call.respond(
+                            HttpStatusCode.NotFound,
+                            "Fant ikke tre for ident $ident",
+                        )
+                    call.respond(HttpStatusCode.OK, tre.toDTO())
+                }
             }
         }
     }

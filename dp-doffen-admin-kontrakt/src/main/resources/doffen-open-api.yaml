@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Oppslag på ident eller id som flyter på rapid'en
+  title: Oppslag på ident eller id
   version: 1.0.0
   contact:
     name: '#team-dagpenger'
@@ -10,50 +10,16 @@ servers:
   - url: https://dp-doffen.intern.nav.no
     description: prod
 paths:
-  /tre/hentForIdent:
+  /tre/hentForId:
     post:
-      summary: Hent tre med noder for en ident
-      operationId: hentTreForIdent
+      summary: Hent tre med noder for en ident eller id
+      operationId: hentTreForId
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/IdentForesporsel'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Tre'
-        404:
-          description: ident ikke funnet
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HttpProblem'
-
-        500:
-          description: Noe gikk galt
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HttpProblem'
-
-  /tre/hentForId:
-    get:
-      summary: Hent tre med noder for en id
-      operationId: hentTreForId
-      parameters:
-        - name: id
-          in: query
-          required: true
-          description: Id det søkes på
-          schema:
-            type: string
+              $ref: '#/components/schemas/IdRequest'
       responses:
         200:
           description: OK
@@ -176,17 +142,13 @@ components:
             - søknadId
             - behandlingId
             - behandlingsKjedeId
-    IdentForesporsel:
+    IdRequest:
       type: object
       required:
-        - ident
+        - id
       properties:
-        ident:
-          $ref: '#/components/schemas/Personident'
-
-    Personident:
-      type: string
-      pattern: '^[0-9]{11}$'
+        id:
+          type: string
     HttpProblem:
       type: object
       required:

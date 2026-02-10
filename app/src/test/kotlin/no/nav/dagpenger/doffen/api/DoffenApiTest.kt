@@ -43,17 +43,15 @@ class DoffenApiTest {
 
     @Test
     fun `feilmelding når json ikke er gyldig`() {
-        coEvery { repo.hentTreForIdent(any()) } returns null
-
         medSikretApi(repo) { context ->
             context
                 .autentisert(
                     HttpMethod.Post,
-                    "/tre/hentForIdent",
+                    "/tre/hentForId",
                     body =
                         """
                         {
-                           "ident" : "1",
+                           "id" : "1",
                             "ugyldigFelt"
                         }
                         """.trimIndent(),
@@ -64,154 +62,18 @@ class DoffenApiTest {
     }
 
     @Test
-    fun `hent for en ident uten treff returnerer en tom liste`() {
-        coEvery { repo.hentTreForIdent(any()) } returns null
-
-        medSikretApi(repo) { context ->
-            context
-                .autentisert(
-                    HttpMethod.Post,
-                    "/tre/hentForIdent",
-                    body = """{"ident":"1"}""",
-                ).apply {
-                    status shouldBe HttpStatusCode.NotFound
-                }
-        }
-    }
-
-    @Test
     fun `hent for en id uten treff returnerer en tom liste`() {
         coEvery { repo.hentTreForIdent(any()) } returns null
+        coEvery { repo.hentIdentForId(any()) } returns "1"
 
         medSikretApi(repo) { context ->
             context
                 .autentisert(
                     HttpMethod.Post,
-                    "/tre/hentForIdent",
-                    body = """{"ident":"1"}""",
+                    "/tre/hentForId",
+                    body = """{"id":"1"}""",
                 ).apply {
                     status shouldBe HttpStatusCode.NotFound
-                }
-        }
-    }
-
-    @Test
-    fun `hent for en ident uten ident funker`() {
-        val tre =
-            listOf(
-                NodeDTO(
-                    id = "id-1",
-                    typeId = TypeId.SØKNADID,
-                    gruppeId = "gruppeId",
-                    gruppeType = GruppeType.SØKNAD,
-                    ident = "1",
-                ),
-                NodeDTO(
-                    id = "id-2",
-                    typeId = TypeId.SAKID,
-                    gruppeId = "gruppeId",
-                    gruppeType = GruppeType.SAK,
-                    ident = "1",
-                ),
-            ).lagTre()
-
-        coEvery { repo.hentTreForIdent(any()) } returns tre
-
-        medSikretApi(repo) { context ->
-            context
-                .autentisert(
-                    HttpMethod.Post,
-                    "/tre/hentForIdent",
-                    body = """{"ident":"1"}""",
-                ).apply {
-                    status shouldBe HttpStatusCode.OK
-                    bodyAsText() shouldEqualSpecifiedJson """
-                        {
-                          "ident": "1",
-                          "saker": [
-                            {
-                              "sakId": "id-2"
-                            }
-                          ],
-                          "søknader": [
-                            {
-                              "søknadId": "id-1"
-                            }
-                          ],
-                          "behandlinger": [],
-                          "meldekort": [],
-                          "utbetalinger": []
-                        }
-                        """
-                }
-        }
-    }
-
-    @Test
-    fun `hent for en ident kan returnere en liste`() {
-        val tre =
-            listOf(
-                NodeDTO(
-                    id = "12345678901",
-                    typeId = TypeId.IDENT,
-                    gruppeId = "ident",
-                    gruppeType = GruppeType.IDENT,
-                    ident = "12345678901",
-                ),
-                NodeDTO(
-                    id = "søknad-id",
-                    typeId = TypeId.SØKNADID,
-                    gruppeId = "gruppeId",
-                    gruppeType = GruppeType.SØKNAD,
-                    ident = "12345678901",
-                ),
-                NodeDTO(
-                    id = "sak-id",
-                    typeId = TypeId.SAKID,
-                    gruppeId = "sak-id",
-                    gruppeType = GruppeType.SAK,
-                    ident = "12345678901",
-                ),
-                NodeDTO(
-                    id = "sak-id2",
-                    typeId = TypeId.SAKID,
-                    gruppeId = "sak-id2",
-                    gruppeType = GruppeType.SAK,
-                    ident = "12345678901",
-                ),
-            ).lagTre()
-
-        coEvery { repo.hentTreForIdent(any()) } returns tre
-
-        medSikretApi(repo) { context ->
-            context
-                .autentisert(
-                    HttpMethod.Post,
-                    "/tre/hentForIdent",
-                    body = """{"ident":"1"}""",
-                ).apply {
-                    status shouldBe HttpStatusCode.OK
-                    bodyAsText() shouldEqualSpecifiedJson """
-                        {
-                          "ident": "12345678901",
-                          "saker": [
-                            {
-                              "sakId": "sak-id"
-                            },
-                            {
-                              "sakId": "sak-id2"
-                            }
-                          ],
-                          "søknader": [
-                            {
-                              "søknadId": "søknad-id"
-                            }
-                          ],
-                          "behandlinger": [],
-                          "meldekort": [],
-                          "utbetalinger": []
-                        }
-                        """
                 }
         }
     }
@@ -256,8 +118,9 @@ class DoffenApiTest {
         medSikretApi(repo) { context ->
             context
                 .autentisert(
-                    HttpMethod.Get,
-                    "/tre/hentForId/1",
+                    HttpMethod.Post,
+                    "/tre/hentForId",
+                    body = """{"id":"1"}""",
                 ).apply {
                     status shouldBe HttpStatusCode.OK
                     bodyAsText() shouldEqualSpecifiedJson """
