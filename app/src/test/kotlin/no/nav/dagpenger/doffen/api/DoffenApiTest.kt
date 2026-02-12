@@ -52,7 +52,7 @@ class DoffenApiTest {
                         """
                         {
                            "id" : "1",
-                            "ugyldigFelt"
+                            "dummy"
                         }
                         """.trimIndent(),
                 ).apply {
