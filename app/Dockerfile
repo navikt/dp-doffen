@@ -1,4 +1,4 @@
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-25@sha256:e77998f4c8621cc0e5c04b16e42c62705d146690dbfd9ce2b24d4a786a052e4a
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-25@sha256:ce9e93424a8e533091e6f6993a4eaf59736a5fa604d026e2b2573dbd063fbaa0
 
 ENV LANG='nb_NO.UTF-8' LANGUAGE='nb_NO:nb' LC_ALL='nb:NO.UTF-8' TZ="Europe/Oslo"
 
