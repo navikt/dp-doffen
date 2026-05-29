@@ -53,7 +53,7 @@ spec:
       runtime: java
   gcp:
     sqlInstances:
-      - type: POSTGRES_17
+      - type: POSTGRES_18
         highAvailability: true
         diskAutoresize: true
         pointInTimeRecovery: true
