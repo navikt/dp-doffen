@@ -17,6 +17,7 @@ import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import no.nav.dagpenger.doffen.Configuration
 import no.nav.dagpenger.doffen.objectMapper
 import no.nav.security.mock.oauth2.MockOAuth2Server
+import tools.jackson.databind.json.JsonMapper
 
 object TestApplication {
     private const val AZUREAD_ISSUER_ID = "azureAd"
@@ -51,10 +52,11 @@ object TestApplication {
             {
                 apply { moduleFunction() }
             },
-            objectMapper.apply {
+            (objectMapper as JsonMapper)
+                .rebuild()
                 // OpenAPI-generator klarer ikke optional-felter. Derfor må vi eksplisitt fjerne null-verdier
-                setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            },
+                .changeDefaultPropertyInclusion { it.withValueInclusion(JsonInclude.Include.NON_NULL) }
+                .build(),
             PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
         ) {
             test()

@@ -1,17 +1,12 @@
 package no.nav.dagpenger.doffen
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.ObjectMapper
+import tools.jackson.module.kotlin.jacksonMapperBuilder
 
 val objectMapper: ObjectMapper =
-    jacksonObjectMapper()
-        .registerKotlinModule()
-        .registerModule(JavaTimeModule())
-        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    jacksonMapperBuilder()
         .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
+        .changeDefaultPropertyInclusion { it.withValueInclusion(JsonInclude.Include.NON_NULL) }
+        .build()
