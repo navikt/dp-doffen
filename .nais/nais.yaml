@@ -12,6 +12,9 @@ spec:
     path: /isalive
   readiness:
     path: /isready
+  preStopHook:
+    http:
+      path: /stop
   leaderElection: false
   prometheus:
     enabled: true
