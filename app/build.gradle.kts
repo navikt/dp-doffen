@@ -27,7 +27,7 @@ dependencies {
     testImplementation(libs.mock.oauth2.server)
     testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.kotest.assertions.json)
-    testImplementation("com.github.navikt.tbd-libs:naisful-test-app:20260826.1506")
+    testImplementation("com.github.navikt.tbd-libs:naisful-test-app:20260917.2152")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation(libs.rapids.and.rivers.test)
     testImplementation(libs.bundles.postgres.test)
