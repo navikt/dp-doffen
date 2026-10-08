@@ -13,7 +13,7 @@ dependencies {
     implementation(libs.kotlin.logging)
     implementation(libs.bundles.ktor.server)
     implementation(libs.bundles.ktor.client)
-    implementation("no.nav.dagpenger:oauth2-klient:2026.10.08-12.22.ec7616f2fc08")
+    implementation("no.nav.dagpenger:oauth2-klient:2026.10.08-18.23.f84047ea6970")
     implementation(libs.bundles.postgres)
 
     implementation("io.ktor:ktor-server-sse:$ktorVersion")
