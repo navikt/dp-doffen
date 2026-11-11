@@ -17,7 +17,7 @@ dependencies {
     implementation(libs.bundles.postgres)
 
     implementation("io.ktor:ktor-server-sse:$ktorVersion")
-    implementation("com.github.navikt.tbd-libs:naisful-app:20261005.1432")
+    implementation("com.github.navikt.tbd-libs:naisful-app:20261029.1843")
     // Fjernet eksplisitt tbd-libs:kafka dependency - rapids-and-rivers kommer med sin egen versjon
     // som ikke aktiverer Kafka transaksjoner (som krever Cluster Authorization)
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
